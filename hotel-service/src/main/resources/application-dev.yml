@@ -6,7 +6,7 @@ spring:
   application:
     name: hotel-service
   datasource:
-    url: jdbc:mysql://localhost:5432/hotel-service
+    url: jdbc:postgresql://localhost:5432/hotel-service
     username: ${USER}
     password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
