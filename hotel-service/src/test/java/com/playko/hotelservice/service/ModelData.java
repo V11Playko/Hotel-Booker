@@ -12,7 +12,7 @@ public class ModelData {
         hotel.setFacilities("Piscina, restaurante");
         hotel.setNumberRooms(43);
         hotel.setAveragePricePerNight(200.50);
-        hotel.setStarsCategory("3");
+        hotel.setStarsCategory(3);
 
         return hotel;
     }
