@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.3'
+	id 'org.springframework.boot' version '3.0.4'
 	id 'io.spring.dependency-management' version '1.1.3'
 }
 
@@ -17,9 +17,12 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config:4.0.2'
-	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.0.1'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.2'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config:4.0.0'
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.0.0'
+
+	implementation 'org.hibernate.validator:hibernate-validator:7.0.2.Final' // Usa la última versión disponible
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql'
@@ -29,9 +32,14 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.30.2'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5',
+			'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
