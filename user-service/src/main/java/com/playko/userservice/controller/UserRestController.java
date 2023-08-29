@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users/v1")
+@RequestMapping("/users/v1/admin")
 public class UserRestController {
     private final IUserService userService;
 
