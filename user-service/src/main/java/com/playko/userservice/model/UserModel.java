@@ -21,7 +21,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user-table")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserModel implements Serializable {
@@ -49,9 +49,7 @@ public class UserModel implements Serializable {
     @NotBlank(message = "Field 'password' it's required")
     private String password;
 
-    @NotNull
-    @Min(value = 1, message = "This value is invalid")
-    @Max(value = 3, message = "This value is invalid")
+    @NotNull(message = "Field 'role' it's required")
     @ManyToOne
     @JoinColumn(name = "id_role")
     private RoleModel role; // Cambiado de Long a RoleModel

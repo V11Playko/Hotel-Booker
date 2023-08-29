@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "role-table")
+@Table(name = "role")
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleModel implements Serializable {
@@ -26,8 +26,6 @@ public class RoleModel implements Serializable {
     private Long id;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "role")
-    private List<UserModel> users;
 
     public RoleModel(Long id) {
         this.id = id;
@@ -57,11 +55,4 @@ public class RoleModel implements Serializable {
         this.description = description;
     }
 
-    public List<UserModel> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserModel> users) {
-        this.users = users;
-    }
 }
