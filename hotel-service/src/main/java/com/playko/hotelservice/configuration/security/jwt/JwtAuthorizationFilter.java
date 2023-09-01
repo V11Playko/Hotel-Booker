@@ -37,6 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         Map<String, List<String>> rolesEndpointsMap = new HashMap<>();
         // Agrega más roles y sus respectivos endpoints según sea necesario
         rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList(""));
+        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/hotel/v1/list-hotels"));
 
 
         // Hacer la excepcion para el token

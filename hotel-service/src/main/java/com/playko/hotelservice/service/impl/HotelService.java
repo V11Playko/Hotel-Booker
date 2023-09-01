@@ -6,7 +6,12 @@ import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -47,6 +52,13 @@ public class HotelService implements IHotelService {
                 roomRepository.save(room);
             }
         }
+    }
+
+    @Override
+    public List<HotelModel> getHotelList(int page, int elementsXpage) {
+        Pageable pageable = PageRequest.of(page, elementsXpage);
+        Page<HotelModel> hotelPage = hotelRepository.findAll(pageable);
+        return hotelPage.getContent();
     }
 
     private double[] getRoomProportions(Integer starsCategory, Integer numRooms) {

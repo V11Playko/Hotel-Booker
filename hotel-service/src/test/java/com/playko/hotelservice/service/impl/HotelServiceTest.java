@@ -9,8 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,5 +65,29 @@ class HotelServiceTest {
             int expectedCount = (int) (expectedProportions[i] * hotelModel.getNumberRooms());
             verify(roomRepository, times(expectedCount)).save(argThat(room -> room.getType().equals(roomType)));
         }
+    }
+
+    @Test
+    public void testGetHotelList() {
+        // Crear una lista de hoteles ficticia para simular la respuesta de la base de datos
+        List<HotelModel> fakeHotelList = List.of(
+                ModelData.obtainHotel(),
+                ModelData.obtainHotel(),
+                ModelData.obtainHotel()
+        );
+
+        // Configurar el comportamiento del Mock
+        Pageable pageable = PageRequest.of(0, 10); // Página 0, 10 elementos por página
+        Page<HotelModel> fakeHotelPage = new PageImpl<>(fakeHotelList, pageable, fakeHotelList.size());
+        Mockito.when(hotelRepository.findAll(pageable)).thenReturn(fakeHotelPage);
+
+        // Crear una instancia de HotelService con el Mock de HotelRepository
+        HotelService hotelService = new HotelService(hotelRepository, roomRepository);
+
+        // Llamar al método que queremos probar
+        List<HotelModel> result = hotelService.getHotelList(0, 10);
+
+        // Verificar que el resultado coincida con la lista ficticia
+        assertEquals(fakeHotelList, result);
     }
 }
