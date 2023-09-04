@@ -12,24 +12,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/users/v1/admin")
-public class AdminRestController {
+@RequestMapping("/users/v1/client")
+public class ClientRestController {
+
     private final IUserService userService;
     private final IUserRequestMapper userRequestMapper;
 
-    public AdminRestController(IUserService userService, IUserRequestMapper userRequestMapper) {
+    public ClientRestController(IUserService userService, IUserRequestMapper userRequestMapper) {
         this.userService = userService;
         this.userRequestMapper = userRequestMapper;
     }
@@ -42,24 +40,11 @@ public class AdminRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error"))),
                     @ApiResponse(responseCode = "403", description = "Role not allowed for user creation",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PostMapping("/save-owner")
-    public ResponseEntity<Map<String, String>> saveOwner(@Valid @RequestBody UserRequestDto user) {
-        user.setRole(2L);
+    @PostMapping("/save-client")
+    public ResponseEntity<Map<String, String>> saveClient(@Valid @RequestBody UserRequestDto user) {
+        user.setRole(4L);
         userService.saveUser(userRequestMapper.toUser(user));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.USER_CREATED_MESSAGE));
-    }
-
-
-    @Operation(summary = "Get a user",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "User returned",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserRequestDto.class))),
-                    @ApiResponse(responseCode = "404", description = "User not found",
-                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @GetMapping("/user-by-email")
-    public ResponseEntity<UserModel> getUserByEmail(@RequestParam String email) {
-        Optional<UserModel> user = userService.getUserByEmail(email);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
