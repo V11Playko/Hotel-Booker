@@ -11,5 +11,5 @@ import java.util.List;
 
 @Repository
 public interface IRoomRepository extends JpaRepository<RoomModel, Long> {
-    List<RoomModel> findRoomsByHotelId(Long hotelId, Pageable pageable);
+    Page<RoomModel> findRoomsByHotelId(Long hotelId, Pageable pageable);
 }
