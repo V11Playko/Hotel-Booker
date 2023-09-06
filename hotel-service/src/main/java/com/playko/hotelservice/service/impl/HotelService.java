@@ -5,13 +5,18 @@ import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -56,9 +61,31 @@ public class HotelService implements IHotelService {
 
     @Override
     public List<HotelModel> getHotelList(int page, int elementsXpage) {
+        // Define la ordenación por ID de manera ascendente
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+
+        // Crea una solicitud de página que incluya la ordenación
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, sort);
+
+        // Obtén todos los hoteles ordenados por ID
+        List<HotelModel> hotels = hotelRepository.findAll(sort);
+
+        return hotels;
+    }
+
+    @Override
+    public List<RoomModel> getRooms(Long hotelId, int page, int elementsXpage) {
+        // Crear un objeto Pageable para la paginación
         Pageable pageable = PageRequest.of(page, elementsXpage);
-        Page<HotelModel> hotelPage = hotelRepository.findAll(pageable);
-        return hotelPage.getContent();
+
+        // Buscar el hotel por su ID
+        HotelModel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new EntityNotFoundException("Hotel not found with ID: " + hotelId));
+
+        // Obtener una página de habitaciones del hotel directamente
+        List<RoomModel> roomsList = roomRepository.findRoomsByHotelId(hotelId, pageable).stream().toList();
+
+        return roomsList;
     }
 
     private double[] getRoomProportions(Integer starsCategory, Integer numRooms) {
