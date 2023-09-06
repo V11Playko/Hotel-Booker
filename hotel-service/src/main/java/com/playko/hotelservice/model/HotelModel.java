@@ -1,5 +1,7 @@
 package com.playko.hotelservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,8 @@ public class HotelModel implements Serializable {
     private Double averagePricePerNight;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @JsonManagedReference // Evita la serialización infinita desde el lado "padre"
+    @JsonIgnore
     private List<RoomModel> rooms;
 
     public HotelModel() {
