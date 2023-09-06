@@ -22,7 +22,10 @@ import java.util.regex.Pattern;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private boolean isEndpointMatch(String allowedEndpoint, String actualEndpoint) {
-        Pattern pattern = Pattern.compile(allowedEndpoint.replaceAll("\\{id\\}", "[^/]+"));
+        String regex = allowedEndpoint
+                .replaceAll("\\{id\\}", "[^/]+")
+                .replaceAll("\\{hotelId\\}", "[^/]+"); // Reemplazar {hotelId} con el valor actual
+        Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(actualEndpoint).matches();
     }
 
@@ -37,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         Map<String, List<String>> rolesEndpointsMap = new HashMap<>();
         // Agrega más roles y sus respectivos endpoints según sea necesario
         rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList(""));
-        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/hotel/v1/list-hotels"));
+        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/hotel/v1/list-hotels", "/hotel/v1/list-rooms/{hotelId}"));
 
 
         // Hacer la excepcion para el token
