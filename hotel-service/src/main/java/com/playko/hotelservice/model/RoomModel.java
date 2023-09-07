@@ -1,5 +1,6 @@
 package com.playko.hotelservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +24,7 @@ public class RoomModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id") // Nombre de la columna en la tabla de habitaciones que hace referencia al hotel
+    @JsonBackReference // Evita la serialización infinita desde el lado "hijo"
     private HotelModel hotel;
 
 
