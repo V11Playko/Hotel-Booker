@@ -52,7 +52,7 @@ public class HotelService implements IHotelService {
             for (int j = 0; j < roomCounts[i]; j++) {
                 RoomModel room = new RoomModel();
                 room.setType(roomCategories[i]);
-                room.setAvailable("Yes");
+                room.setAvailable(true);
                 room.setHotel(hotelModel);
                 roomRepository.save(room);
             }
