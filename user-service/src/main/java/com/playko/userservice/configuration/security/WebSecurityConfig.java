@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/v1/employee/**").hasRole("EMPLOYEE")
                         .requestMatchers("/users/v1/client/save-client").permitAll()
                         .requestMatchers("/users/v1/client/**").hasRole("CLIENT")
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() 
                 )
                 .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

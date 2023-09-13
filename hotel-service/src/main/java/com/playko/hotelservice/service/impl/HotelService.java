@@ -52,7 +52,7 @@ public class HotelService implements IHotelService {
             for (int j = 0; j < roomCounts[i]; j++) {
                 RoomModel room = new RoomModel();
                 room.setType(roomCategories[i]);
-                room.setAvailable("Yes");
+                room.setAvailable(true);
                 room.setHotel(hotelModel);
                 roomRepository.save(room);
             }
@@ -71,21 +71,6 @@ public class HotelService implements IHotelService {
         List<HotelModel> hotels = hotelRepository.findAll(sort);
 
         return hotels;
-    }
-
-    @Override
-    public List<RoomModel> getRooms(Long hotelId, int page, int elementsXpage) {
-        // Crear un objeto Pageable para la paginación
-        Pageable pageable = PageRequest.of(page, elementsXpage);
-
-        // Buscar el hotel por su ID
-        HotelModel hotel = hotelRepository.findById(hotelId)
-                .orElseThrow(() -> new EntityNotFoundException("Hotel not found with ID: " + hotelId));
-
-        // Obtener una página de habitaciones del hotel directamente
-        List<RoomModel> roomsList = roomRepository.findRoomsByHotelId(hotelId, pageable).stream().toList();
-
-        return roomsList;
     }
 
     private double[] getRoomProportions(Integer starsCategory, Integer numRooms) {

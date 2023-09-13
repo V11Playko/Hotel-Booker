@@ -93,38 +93,4 @@ class HotelServiceTest {
         // Verificar que el resultado coincida con la lista ficticia
         assertEquals(fakeHotelList, result);
     }
-
-    @Test
-    void testGetRooms() {
-        // Datos de prueba
-        Long hotelId = 1L;
-        int page = 0;
-        int elementsXpage = 10;
-
-        // Mock del hotel encontrado por ID
-        HotelModel hotel = new HotelModel();
-        hotel.setId(hotelId);
-        when(hotelRepository.findById(hotelId)).thenReturn(Optional.of(hotel));
-
-        // Mock de la página de habitaciones
-        List<RoomModel> roomList = new ArrayList<>();
-        // Agrega habitaciones de prueba a la lista
-        // ...
-
-        Page<RoomModel> roomPage = new PageImpl<>(roomList, Pageable.unpaged(), roomList.size());
-        when(roomRepository.findRoomsByHotelId(eq(hotelId), any(Pageable.class))).thenReturn(roomPage);
-
-        // Llama al método que se va a probar
-        List<RoomModel> result = hotelService.getRooms(hotelId, page, elementsXpage);
-
-        // Verifica que se llamó a los métodos correspondientes con los argumentos adecuados
-        verify(hotelRepository, times(1)).findById(hotelId);
-        verify(roomRepository, times(1)).findRoomsByHotelId(eq(hotelId), any(Pageable.class));
-
-        // Realiza las aserciones necesarias para verificar el resultado
-        // ...
-
-        // Por ejemplo, puedes verificar el tamaño de la lista resultante
-        assertEquals(roomList.size(), result.size());
-    }
 }

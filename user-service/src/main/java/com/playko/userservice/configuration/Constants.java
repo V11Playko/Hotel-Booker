@@ -14,5 +14,10 @@ public class Constants {
     public static final String SWAGGER_TERMS_OF_SERVICE_MESSAGE = "http://swagger.io/terms/";
     public static final String RESPONSE_MESSAGE_KEY = "message";
     public static final String USER_CREATED_MESSAGE = "User created successfully";
+    public static final Long ADMIN_ROLE_ID = 1L;
+    public static final Long OWNER_ROLE_ID = 2L;
+    public static final Long EMPLOYEE_ROLE_ID = 3L;
+    public static final Long CLIENT_ROLE_ID = 4L;
 
+    public static final String USER_NOT_FOUND_EXCEPTION = "User not found.";
 }

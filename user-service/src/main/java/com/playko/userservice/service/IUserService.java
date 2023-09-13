@@ -8,4 +8,7 @@ public interface IUserService {
 
     void saveUser(UserModel userModel);
     Optional<UserModel> getUserByEmail(String email);
+    Optional<UserModel> getOwner(Long id);
+    Optional<UserModel> getEmployee(Long id);
+    Optional<UserModel> getClient(Long id);
 }
