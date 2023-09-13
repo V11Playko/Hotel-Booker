@@ -61,17 +61,4 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getHotelList(page, elementsXPage));
     }
 
-    @Operation(summary = "Get Rooms")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Rooms list returned", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Rooms already exists", content = @Content)
-    })
-    @GetMapping("/list-rooms/{hotelId}")
-    public ResponseEntity<List<RoomModel>> listRooms(
-            @PathVariable("hotelId") Long hotelId,
-            @Positive @RequestParam("page") int page,
-            @Positive @RequestParam("elementsXPage") int elementsXPage
-    ){
-        return ResponseEntity.ok(hotelService.getRooms(hotelId, page, elementsXPage));
-    }
 }
