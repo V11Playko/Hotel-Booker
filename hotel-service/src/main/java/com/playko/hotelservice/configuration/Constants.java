@@ -14,5 +14,7 @@ public class Constants {
     public static final String SWAGGER_TERMS_OF_SERVICE_MESSAGE = "http://swagger.io/terms/";
     public static final String RESPONSE_MESSAGE_KEY = "message";
     public static final String HOTEL_CREATED_MESSAGE = "Hotel created successfully";
+    public static final String SAVED_RESERVATION_MESSAGE = "Reservation successfully saved";
+    public static final String ERROR_SAVED_RESERVATION = "Error when saving the reservation, verify that the data is done correctly.";
 
 }
