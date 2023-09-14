@@ -22,6 +22,7 @@ public class Constants {
     public static final String HOTEL_NOT_FOUND_EXCEPTION = "Hotel not found";
     public static final String ROOM_NOT_FOUND_EXCEPTION = "Room not found";
     public static final String ROOM_UNVAILABLE_EXCEPTION = "Room not available.";
+    public static final String INVALID_PAGE_REQUEST_EXCEPTION = "the page number and elements per page are not valid.";
 
 
 }
