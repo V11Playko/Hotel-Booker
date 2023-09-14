@@ -8,7 +8,6 @@ import com.playko.hotelservice.service.IRoomService;
 import com.playko.hotelservice.service.exception.HotelNotFoundException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
 import com.playko.hotelservice.service.exception.RoomNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
