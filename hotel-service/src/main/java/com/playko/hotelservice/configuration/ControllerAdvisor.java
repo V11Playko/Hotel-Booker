@@ -4,6 +4,7 @@ import com.playko.hotelservice.service.exception.HotelNotFoundException;
 import com.playko.hotelservice.service.exception.HotelNotSaveException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
 import com.playko.hotelservice.service.exception.NoDataFoundException;
+import com.playko.hotelservice.service.exception.NumberRoomsPositiveException;
 import com.playko.hotelservice.service.exception.RoomNotFoundException;
 import com.playko.hotelservice.service.exception.RoomUnavailableException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_FOUND_EX
 import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_SAVE_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.INVALID_PAGE_REQUEST_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
+import static com.playko.hotelservice.configuration.Constants.NUMBER_ROOMS_POSITIVE_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 import static com.playko.hotelservice.configuration.Constants.ROOM_NOT_FOUND_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.ROOM_UNVAILABLE_EXCEPTION;
@@ -87,6 +89,13 @@ public class ControllerAdvisor {
             InvalidPageRequestException invalidPageRequestException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INVALID_PAGE_REQUEST_EXCEPTION));
+    }
+
+    @ExceptionHandler(NumberRoomsPositiveException.class)
+    public ResponseEntity<Map<String, String>> handleNumberRoomsPositiveException(
+            NumberRoomsPositiveException numberRoomsPositiveException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, NUMBER_ROOMS_POSITIVE_EXCEPTION));
     }
 
 }
