@@ -19,5 +19,9 @@ public class Constants {
     public static final String ERROR_SAVED_RESERVATION = "Error when saving the reservation, verify that the data is done correctly.";
     public static final String NO_DATA_FOUND_MESSAGE = "No data found.";
     public static final String HOTEL_NOT_SAVE_EXCEPTION = "Error saving hotel and rooms.";
+    public static final String HOTEL_NOT_FOUND_EXCEPTION = "Hotel not found";
+    public static final String ROOM_NOT_FOUND_EXCEPTION = "Room not found";
+    public static final String ROOM_UNVAILABLE_EXCEPTION = "Room not available.";
+
 
 }
