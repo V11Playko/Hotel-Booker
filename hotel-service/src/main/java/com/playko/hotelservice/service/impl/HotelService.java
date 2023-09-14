@@ -5,6 +5,8 @@ import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
+import com.playko.hotelservice.service.exception.HotelNotSaveException;
+import com.playko.hotelservice.service.exception.NoDataFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -32,30 +34,34 @@ public class HotelService implements IHotelService {
 
     @Override
     public void saveHotel(HotelModel hotelModel) {
-        // Guarda el hotel en la base de datos
-        hotelRepository.save(hotelModel);
+        try {
+            // Guarda el hotel en la base de datos
+            hotelRepository.save(hotelModel);
 
-        // Define las proporciones de habitaciones según la categoría de estrellas
-        double[] roomProportions = getRoomProportions(hotelModel.getStarsCategory(), hotelModel.getNumberRooms());
+            // Define las proporciones de habitaciones según la categoría de estrellas
+            double[] roomProportions = getRoomProportions(hotelModel.getStarsCategory(), hotelModel.getNumberRooms());
 
-        // Define las categorías de habitaciones y sus cantidades
-        String[] roomCategories = {"Standard", "Superior", "Suite"};
-        int[] roomCounts = new int[roomCategories.length];
+            // Define las categorías de habitaciones y sus cantidades
+            String[] roomCategories = {"Standard", "Superior", "Suite"};
+            int[] roomCounts = new int[roomCategories.length];
 
-        // Calcula la cantidad de habitaciones para cada categoría
-        for (int i = 0; i < roomCategories.length; i++) {
-            roomCounts[i] = (int) (roomProportions[i] * hotelModel.getNumberRooms());
-        }
-
-        // Crea y guarda las habitaciones en la base de datos
-        for (int i = 0; i < roomCategories.length; i++) {
-            for (int j = 0; j < roomCounts[i]; j++) {
-                RoomModel room = new RoomModel();
-                room.setType(roomCategories[i]);
-                room.setAvailable(true);
-                room.setHotel(hotelModel);
-                roomRepository.save(room);
+            // Calcula la cantidad de habitaciones para cada categoría
+            for (int i = 0; i < roomCategories.length; i++) {
+                roomCounts[i] = (int) (roomProportions[i] * hotelModel.getNumberRooms());
             }
+
+            // Crea y guarda las habitaciones en la base de datos
+            for (int i = 0; i < roomCategories.length; i++) {
+                for (int j = 0; j < roomCounts[i]; j++) {
+                    RoomModel room = new RoomModel();
+                    room.setType(roomCategories[i]);
+                    room.setAvailable(true);
+                    room.setHotel(hotelModel);
+                    roomRepository.save(room);
+                }
+            }
+        } catch (RuntimeException e) {
+            throw new HotelNotSaveException();
         }
     }
 
@@ -69,6 +75,10 @@ public class HotelService implements IHotelService {
 
         // Obtén todos los hoteles ordenados por ID
         List<HotelModel> hotels = hotelRepository.findAll(sort);
+
+        if (hotels.isEmpty()) {
+            throw new NoDataFoundException();
+        }
 
         return hotels;
     }
