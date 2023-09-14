@@ -5,7 +5,9 @@ import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IRoomService;
-import jakarta.persistence.EntityNotFoundException;
+import com.playko.hotelservice.service.exception.HotelNotFoundException;
+import com.playko.hotelservice.service.exception.InvalidPageRequestException;
+import com.playko.hotelservice.service.exception.RoomNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,10 +33,19 @@ public class RoomService implements IRoomService {
 
         // Buscar el hotel por su ID
         HotelModel hotel = hotelRepository.findById(hotelId)
-                .orElseThrow(() -> new EntityNotFoundException("Hotel not found with ID: " + hotelId));
+                .orElseThrow(HotelNotFoundException::new);
+
+        // Validar si el número de página y elementos por página son válidos
+        if (page < 0 || elementsXpage <= 0) {
+            throw new InvalidPageRequestException();
+        }
 
         // Obtener una página de habitaciones del hotel directamente
         List<RoomModel> roomsList = roomRepository.findRoomsByHotelId(hotelId, pageable).stream().toList();
+
+        if (roomsList.isEmpty()) {
+            throw new RoomNotFoundException();
+        }
 
         return roomsList;
     }
