@@ -7,6 +7,7 @@ import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
 import com.playko.hotelservice.service.exception.HotelNotSaveException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
+import com.playko.hotelservice.service.exception.InvalidStarsCategoryException;
 import com.playko.hotelservice.service.exception.NoDataFoundException;
 import com.playko.hotelservice.service.exception.NumberRoomsPositiveException;
 import jakarta.transaction.Transactional;
@@ -33,37 +34,40 @@ public class HotelService implements IHotelService {
 
     @Override
     public void saveHotel(HotelModel hotelModel) {
-        try {
-            // Validar si el número de habitaciones es positivo
-            if (hotelModel.getNumberRooms() <= 0) {
-                throw new NumberRoomsPositiveException();
-            }
-
-            // Define las proporciones de habitaciones según la categoría de estrellas
-            double[] roomProportions = getRoomProportions(hotelModel.getStarsCategory(), hotelModel.getNumberRooms());
-
-            // Define las categorías de habitaciones y sus cantidades
-            String[] roomCategories = {"Standard", "Superior", "Suite"};
-
-            // Crea y guarda las habitaciones en la base de datos
-            for (String roomCategory : roomCategories) {
-                int roomCount = (int) (roomProportions
-                        [Arrays.asList(roomCategories).indexOf(roomCategory)] * hotelModel.getNumberRooms());
-                for (int j = 0; j < roomCount; j++) {
-                    RoomModel room = new RoomModel();
-                    room.setType(roomCategory);
-                    room.setAvailable(true);
-                    room.setHotel(hotelModel);
-                    roomRepository.save(room);
-                }
-            }
-
-            // Guarda el hotel en la base de datos después de crear las habitaciones
-            hotelRepository.save(hotelModel);
-        } catch (RuntimeException e) {
-            throw new HotelNotSaveException();
+        // Validar si el número de habitaciones es positivo
+        if (hotelModel.getNumberRooms() <= 0) {
+            throw new NumberRoomsPositiveException();
         }
+
+        // Validar si la categoría de estrellas está en el rango de 1 a 5
+        int starsCategory = hotelModel.getStarsCategory();
+        if (starsCategory < 1 || starsCategory > 5) {
+            throw new InvalidStarsCategoryException();
+        }
+
+        // Define las proporciones de habitaciones según la categoría de estrellas
+        double[] roomProportions = getRoomProportions(hotelModel.getStarsCategory(), hotelModel.getNumberRooms());
+
+        // Define las categorías de habitaciones y sus cantidades
+        String[] roomCategories = {"Standard", "Superior", "Suite"};
+
+        // Crea y guarda las habitaciones en la base de datos
+        for (String roomCategory : roomCategories) {
+            int roomCount = (int) (roomProportions
+                    [Arrays.asList(roomCategories).indexOf(roomCategory)] * hotelModel.getNumberRooms());
+            for (int j = 0; j < roomCount; j++) {
+                RoomModel room = new RoomModel();
+                room.setType(roomCategory);
+                room.setAvailable(true);
+                room.setHotel(hotelModel);
+                roomRepository.save(room);
+            }
+        }
+
+        // Guarda el hotel en la base de datos después de crear las habitaciones
+        hotelRepository.save(hotelModel);
     }
+
     @Override
     public List<HotelModel> getHotelList(int page, int elementsXpage) {
         // Define la ordenación por ID de manera ascendente
