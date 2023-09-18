@@ -2,6 +2,7 @@ package com.playko.hotelservice.configuration;
 
 import com.playko.hotelservice.service.exception.HotelNotFoundException;
 import com.playko.hotelservice.service.exception.HotelNotSaveException;
+import com.playko.hotelservice.service.exception.InvalidLodgingTimeException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
 import com.playko.hotelservice.service.exception.InvalidStarsCategoryException;
 import com.playko.hotelservice.service.exception.NoDataFoundException;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_FOUND_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_SAVE_EXCEPTION;
+import static com.playko.hotelservice.configuration.Constants.INVALID_LODGING_TIME_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.INVALID_PAGE_REQUEST_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.INVALID_STARS_CATEGORY_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
@@ -107,4 +109,10 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INVALID_STARS_CATEGORY_EXCEPTION));
     }
 
+    @ExceptionHandler(InvalidLodgingTimeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidLodgingTimeException(
+            InvalidLodgingTimeException invalidLodgingTimeException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INVALID_LODGING_TIME_EXCEPTION));
+    }
 }

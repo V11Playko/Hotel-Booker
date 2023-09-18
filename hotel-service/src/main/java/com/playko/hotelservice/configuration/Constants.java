@@ -25,6 +25,7 @@ public class Constants {
     public static final String INVALID_PAGE_REQUEST_EXCEPTION = "the page number and elements per page are not valid.";
     public static final String NUMBER_ROOMS_POSITIVE_EXCEPTION = "Number of rooms must be positive";
     public static final String INVALID_STARS_CATEGORY_EXCEPTION = "The star rating must be in the range of 1 to 5.";
+    public static final String INVALID_LODGING_TIME_EXCEPTION = "Hosting time must be a positive number";
 
 
 }
