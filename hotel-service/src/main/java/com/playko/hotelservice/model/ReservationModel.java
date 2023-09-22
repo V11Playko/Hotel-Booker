@@ -9,13 +9,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,8 +34,14 @@ public class ReservationModel implements Serializable {
     @Id
     private Long id;
 
-    @NotNull(message = "El ID de usuario no puede estar en blanco.")
+    @NotNull(message = "La fecha de reserva no puede ser nula.")
     private Long userId;
+
+    private LocalDateTime dateReservation;
+
+    private int lodgingTime;
+
+    private String status;
 
     @NotNull(message = "El hotel no puede estar en blanco.")
     @ManyToOne
