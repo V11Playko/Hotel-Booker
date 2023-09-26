@@ -26,6 +26,9 @@ public class Constants {
     public static final String NUMBER_ROOMS_POSITIVE_EXCEPTION = "Number of rooms must be positive";
     public static final String INVALID_STARS_CATEGORY_EXCEPTION = "The star rating must be in the range of 1 to 5.";
     public static final String INVALID_LODGING_TIME_EXCEPTION = "Hosting time must be a positive number";
-
+    public static final String EXCEL_REPORT_NOT_FOUND_EXCEPTION = "The Excel file could not be found.";
+    public static final String EXCEL_REPORT_GENERATION_EXCEPTION = "Error generating Excel report.";
+    public static final String INPUT_OUTPUT_EXCEPTION = "Input/Output error generating Excel report";
+    public static final String EXCEL_REPORT_CREATE_SUCCESSFULLY = "Excel report created successfully.";
 
 }

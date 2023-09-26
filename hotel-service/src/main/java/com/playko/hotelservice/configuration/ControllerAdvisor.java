@@ -1,5 +1,7 @@
 package com.playko.hotelservice.configuration;
 
+import com.playko.hotelservice.service.exception.ExcelReportFileNotFoundException;
+import com.playko.hotelservice.service.exception.ExcelReportGenerationException;
 import com.playko.hotelservice.service.exception.HotelNotFoundException;
 import com.playko.hotelservice.service.exception.HotelNotSaveException;
 import com.playko.hotelservice.service.exception.InvalidLodgingTimeException;
@@ -25,6 +27,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.playko.hotelservice.configuration.Constants.EXCEL_REPORT_GENERATION_EXCEPTION;
+import static com.playko.hotelservice.configuration.Constants.EXCEL_REPORT_NOT_FOUND_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_FOUND_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.HOTEL_NOT_SAVE_EXCEPTION;
 import static com.playko.hotelservice.configuration.Constants.INVALID_LODGING_TIME_EXCEPTION;
@@ -114,5 +118,19 @@ public class ControllerAdvisor {
             InvalidLodgingTimeException invalidLodgingTimeException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INVALID_LODGING_TIME_EXCEPTION));
+    }
+
+    @ExceptionHandler(ExcelReportFileNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleExcelReportFileNotFoundException(
+            ExcelReportFileNotFoundException excelReportFileNotFoundException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, EXCEL_REPORT_NOT_FOUND_EXCEPTION));
+    }
+
+    @ExceptionHandler(ExcelReportGenerationException.class)
+    public ResponseEntity<Map<String, String>> handleExcelReportGenerationException(
+            ExcelReportGenerationException excelReportGenerationException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, EXCEL_REPORT_GENERATION_EXCEPTION));
     }
 }
