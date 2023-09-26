@@ -41,6 +41,17 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Exclusión de Commons Logging cuando sea necesario
+	// Me salia un aviso de que debia eliminar eso por un potencial conflicto o incompatibilidad
+	// y la forma en que Spring está gestionando el registro de eventos.
+	configurations.all {
+		resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+			if (details.requested.name == 'commons-logging') {
+				details.useTarget group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
+			}
+		}
+	}
 }
 
 tasks.named('test') {

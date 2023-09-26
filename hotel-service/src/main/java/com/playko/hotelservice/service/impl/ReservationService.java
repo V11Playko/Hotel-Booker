@@ -66,6 +66,11 @@ public class ReservationService implements IReservationService {
         reservationRepository.save(reservationModel);
     }
 
+    @Override
+    public List<ReservationModel> findAllReservation() {
+        return reservationRepository.findAll();
+    }
+
     private void updateRoomAvailability(Long roomId, boolean availability, ReservationModel reservationModel) {
         RoomModel room = roomRepository.findById(roomId)
                 .orElseThrow(RoomNotFoundException::new);
@@ -78,7 +83,7 @@ public class ReservationService implements IReservationService {
         room.setReservation(reservationModel);
     }
 
-    @Scheduled(cron = "0 */2 * * * *") // Ejecutar cada 2 minutos
+    @Scheduled(cron = "0 */10 * * * *") // Ejecutar cada 10 minutos
     public void checkExpiredReservations() {
         LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -95,6 +100,7 @@ public class ReservationService implements IReservationService {
                 restoreRoomAvailability(reservation);
                 // Actualiza el estado de la reserva
                 reservation.setStatus("Completada");
+                reservation.setCheckOutDate(String.valueOf(currentDateTime));
                 // Actualiza la reserva en la base de datos
                 reservationRepository.save(reservation);
             }

@@ -90,6 +90,19 @@ public class HotelService implements IHotelService {
         return hotels;
     }
 
+    @Override
+    public List<HotelModel> findAllHotel() {
+        return hotelRepository.findAll();
+    }
+
+    @Override
+    public HotelModel findHotelById(List<HotelModel> hotels, Long hotelId) {
+        return hotels.stream()
+                .filter(hotel -> hotel.getId().equals(hotelId))
+                .findFirst()
+                .orElse(new HotelModel()); // Tratar la situación en la que no se encuentra el hotel
+    }
+
     private double[] getRoomProportions(Integer starsCategory, Integer numRooms) {
         double[] proportions = {0.0, 0.0, 0.0}; // Inicializa todas las proporciones a 0
 

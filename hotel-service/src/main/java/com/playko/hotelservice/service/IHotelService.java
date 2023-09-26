@@ -10,4 +10,6 @@ public interface IHotelService {
     void saveHotel(HotelModel hotelModel);
 
     List<HotelModel> getHotelList(int page, int elementsXpage);
+    List<HotelModel> findAllHotel();
+    HotelModel findHotelById(List<HotelModel> hotels, Long hotelId);
 }
