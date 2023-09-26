@@ -2,7 +2,10 @@ package com.playko.hotelservice.controller;
 
 import com.playko.hotelservice.configuration.Constants;
 import com.playko.hotelservice.model.HotelModel;
+import com.playko.hotelservice.model.ReservationModel;
 import com.playko.hotelservice.service.IHotelService;
+import com.playko.hotelservice.service.IReservationService;
+import com.playko.hotelservice.service.impl.ExcelReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,17 +22,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static com.playko.hotelservice.configuration.Constants.INPUT_OUTPUT_EXCEPTION;
+import static com.playko.hotelservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 
 @RestController
 @RequestMapping("/hotel/v1")
 public class HotelController {
     private final IHotelService hotelService;
+    private final IReservationService reservationService;
+    private final ExcelReportService excelReportService;
 
-    public HotelController(IHotelService hotelService) {
+
+    public HotelController(IHotelService hotelService, IReservationService reservationService, ExcelReportService excelReportService) {
         this.hotelService = hotelService;
+        this.reservationService = reservationService;
+        this.excelReportService = excelReportService;
     }
 
     @Operation(summary = "Add a new hotel",
@@ -58,4 +70,23 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getHotelList(page, elementsXPage));
     }
 
+    @Operation(summary = "Get excel report")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Excel report returned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Excel report exists", content = @Content)
+    })
+    @GetMapping("/generate-excel")
+    public ResponseEntity<Map<String, String>> generateExcelReport() {
+        try {
+            String fileName = "report.xlsx"; // Nombre del archivo de Excel
+            List<ReservationModel> reservations = reservationService.findAllReservation(); // Reemplaza con tus datos reales
+            List<HotelModel> hotels = hotelService.findAllHotel(); // Reemplaza con tus datos reales
+            excelReportService.generateExcelReport(fileName, reservations, hotels);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.EXCEL_REPORT_CREATE_SUCCESSFULLY));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INPUT_OUTPUT_EXCEPTION));
+        }
+    }
 }

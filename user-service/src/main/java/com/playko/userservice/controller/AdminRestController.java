@@ -74,4 +74,15 @@ public class AdminRestController {
     public ResponseEntity<Optional<UserModel>> getOwner(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getOwner(id));
     }
+
+    @Operation(summary = "Get a user with role CLIENT",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "User returned",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserRequestDto.class))),
+                    @ApiResponse(responseCode = "404", description = "User not found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @GetMapping("/getClient/{id}")
+    public ResponseEntity<Optional<UserModel>> getClient(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getClient(id));
+    }
 }
