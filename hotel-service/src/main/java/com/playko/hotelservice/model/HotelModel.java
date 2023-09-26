@@ -13,6 +13,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,10 @@ public class HotelModel implements Serializable {
 
     @NotBlank(message = "El nombre del hotel no puede estar en blanco.")
     private String name;
+
+    @Pattern(regexp = "^\\+?57\\s(3[0-2]|7[0-1])\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +57 313..")
+    @NotBlank(message = "Field 'phoneNumber' it's required")
+    private String phoneNumber;
 
     @NotBlank(message = "La dirección del hotel no puede estar en blanco.")
     private String address;
