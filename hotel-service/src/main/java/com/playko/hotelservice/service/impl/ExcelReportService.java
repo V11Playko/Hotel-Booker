@@ -4,11 +4,11 @@ import com.playko.hotelservice.client.UserClient;
 import com.playko.hotelservice.client.dto.User;
 import com.playko.hotelservice.model.HotelModel;
 import com.playko.hotelservice.model.ReservationModel;
-import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.service.IExcelReportService;
 import com.playko.hotelservice.service.IHotelService;
 import com.playko.hotelservice.service.exception.ExcelReportFileNotFoundException;
 import com.playko.hotelservice.service.exception.ExcelReportGenerationException;
+import com.playko.hotelservice.utils.ReportUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +27,12 @@ import java.util.Optional;
 public class ExcelReportService implements IExcelReportService {
     private final UserClient userClient;
     private final IHotelService hotelService;
+    private final ReportUtils reportUtils;
 
-    public ExcelReportService(UserClient userClient, IHotelService hotelService) {
+    public ExcelReportService(UserClient userClient, IHotelService hotelService, ReportUtils reportUtils) {
         this.userClient = userClient;
         this.hotelService = hotelService;
+        this.reportUtils = reportUtils;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class ExcelReportService implements IExcelReportService {
             int rowNum = 1;
             for (ReservationModel reservation : reservations) {
                 // Obtener los tipos de habitaciones de una reserva
-                List<String> roomTypes = getRoomTypesFromReservation(reservation);
+                List<String> roomTypes = reportUtils.getRoomTypesFromReservation(reservation);
                 Optional<User> user = userClient.getClientByAdmin(reservation.getUserId());
 
                 Row row = sheet.createRow(rowNum++);
@@ -101,19 +102,4 @@ public class ExcelReportService implements IExcelReportService {
         }
     }
 
-    public List<String> getRoomTypesFromReservation(ReservationModel reservation) {
-        List<String> roomTypes = new ArrayList<>();
-
-        // Verificar si la reserva tiene habitaciones
-        if (reservation.getReservedRooms() != null && !reservation.getReservedRooms().isEmpty()) {
-            // Iterar sobre las habitaciones reservadas
-            for (RoomModel room : reservation.getReservedRooms()) {
-                // Obtener el tipo de habitación y agregarlo a la lista
-                String roomType = room.getType();
-                roomTypes.add(roomType);
-            }
-        }
-
-        return roomTypes;
-    }
 }
