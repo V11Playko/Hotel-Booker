@@ -3,7 +3,9 @@ package com.playko.hotelservice.controller;
 import com.playko.hotelservice.configuration.Constants;
 import com.playko.hotelservice.model.HotelModel;
 import com.playko.hotelservice.model.ReservationModel;
+import com.playko.hotelservice.service.IExcelReportService;
 import com.playko.hotelservice.service.IHotelService;
+import com.playko.hotelservice.service.IPdfReportService;
 import com.playko.hotelservice.service.IReservationService;
 import com.playko.hotelservice.service.impl.ExcelReportService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,20 +30,25 @@ import java.util.List;
 import java.util.Map;
 
 import static com.playko.hotelservice.configuration.Constants.INPUT_OUTPUT_EXCEPTION;
+import static com.playko.hotelservice.configuration.Constants.PDF_REPORT_CREATE_SUCCESSFULLY;
 import static com.playko.hotelservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 
 @RestController
 @RequestMapping("/hotel/v1")
 public class HotelController {
     private final IHotelService hotelService;
+
     private final IReservationService reservationService;
-    private final ExcelReportService excelReportService;
 
+    private final IExcelReportService excelReportService;
 
-    public HotelController(IHotelService hotelService, IReservationService reservationService, ExcelReportService excelReportService) {
+    private final IPdfReportService pdfReportService;
+
+    public HotelController(IHotelService hotelService, IReservationService reservationService, ExcelReportService excelReportService, IPdfReportService pdfReportService) {
         this.hotelService = hotelService;
         this.reservationService = reservationService;
         this.excelReportService = excelReportService;
+        this.pdfReportService = pdfReportService;
     }
 
     @Operation(summary = "Add a new hotel",
@@ -66,7 +73,7 @@ public class HotelController {
     public ResponseEntity<List<HotelModel>> listHotel(
             @Positive @RequestParam("page") int page,
             @Positive @RequestParam("elementsXPage") int elementsXPage
-    ){
+    ) {
         return ResponseEntity.ok(hotelService.getHotelList(page, elementsXPage));
     }
 
@@ -78,12 +85,32 @@ public class HotelController {
     @GetMapping("/generate-excel")
     public ResponseEntity<Map<String, String>> generateExcelReport() {
         try {
-            String fileName = "report.xlsx"; // Nombre del archivo de Excel
-            List<ReservationModel> reservations = reservationService.findAllReservation(); // Reemplaza con tus datos reales
-            List<HotelModel> hotels = hotelService.findAllHotel(); // Reemplaza con tus datos reales
+            String fileName = "report.xlsx";
+            List<ReservationModel> reservations = reservationService.findAllReservation();
+            List<HotelModel> hotels = hotelService.findAllHotel();
             excelReportService.generateExcelReport(fileName, reservations, hotels);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.EXCEL_REPORT_CREATE_SUCCESSFULLY));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INPUT_OUTPUT_EXCEPTION));
+        }
+    }
+
+    @Operation(summary = "Get PDF report")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "PDF report returned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "PDF report exists", content = @Content)
+    })
+    @GetMapping("/generate-pdf")
+    public ResponseEntity<Map<String, String>> generatePdfReport() {
+        try {
+            String fileName = "report.pdf";
+            List<ReservationModel> reservations = reservationService.findAllReservation();
+            List<HotelModel> hotels = hotelService.findAllHotel();
+            pdfReportService.generatePdfReport(fileName, reservations, hotels);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, PDF_REPORT_CREATE_SUCCESSFULLY));
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, INPUT_OUTPUT_EXCEPTION));
