@@ -30,5 +30,7 @@ public class Constants {
     public static final String EXCEL_REPORT_GENERATION_EXCEPTION = "Error generating Excel report.";
     public static final String INPUT_OUTPUT_EXCEPTION = "Input/Output error generating Excel report";
     public static final String EXCEL_REPORT_CREATE_SUCCESSFULLY = "Excel report created successfully.";
+    public static final String PDF_REPORT_CREATE_SUCCESSFULLY = "PDF report created successfully.";
+    public static final String PDF_REPORT_GENERATION_EXCEPTION = "Error generating Pdf report.";
 
 }

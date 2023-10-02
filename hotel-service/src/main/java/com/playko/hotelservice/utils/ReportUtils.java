@@ -2,11 +2,12 @@ package com.playko.hotelservice.utils;
 
 import com.playko.hotelservice.model.ReservationModel;
 import com.playko.hotelservice.model.RoomModel;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class ReportUtils {
 
     public List<String> getRoomTypesFromReservation(ReservationModel reservation) {
