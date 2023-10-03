@@ -33,6 +33,15 @@ public class ReservationService implements IReservationService {
         this.hotelRepository = hotelRepository;
     }
 
+    /**
+     * Save a reservation at a hotel
+     *
+     * @param reservationModel - Model with which a reservation is saved
+     * @throws HotelNotFoundException - Hotel not found
+     * @throws IllegalArgumentException - Validate that the lodgingTime attribute is neither null nor negative
+     *
+     * The status of the rooms to be reserved is also updated
+     */
     @Override
     public void saveReservation(ReservationModel reservationModel) {
         Long hotelId = reservationModel.getHotel().getId();
@@ -66,11 +75,25 @@ public class ReservationService implements IReservationService {
         reservationRepository.save(reservationModel);
     }
 
+    /**
+     * Find all reservation
+     *
+     * @return
+     */
     @Override
     public List<ReservationModel> findAllReservation() {
         return reservationRepository.findAll();
     }
 
+    /**
+     *  Method to update the room status
+     *
+     * @param roomId - room identification
+     * @param availability- Room availability
+     * @param reservationModel - Model with which a reservation is saved
+     * @throws RoomNotFoundException - Room not found
+     * @throws RoomUnavailableException - The room you want is not available
+     */
     private void updateRoomAvailability(Long roomId, boolean availability, ReservationModel reservationModel) {
         RoomModel room = roomRepository.findById(roomId)
                 .orElseThrow(RoomNotFoundException::new);
@@ -83,6 +106,12 @@ public class ReservationService implements IReservationService {
         room.setReservation(reservationModel);
     }
 
+    /**
+     * Method that is executed periodically to update the status
+     * of reservations that have already fulfilled their instance in the
+     * hotel, it also uses a method to update the status of the rooms
+     * and make them available again for customers.
+     */
     @Scheduled(cron = "0 */10 * * * *") // Ejecutar cada 10 minutos
     public void checkExpiredReservations() {
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -107,6 +136,11 @@ public class ReservationService implements IReservationService {
         }
     }
 
+    /**
+     * Method to change the status of the rooms when the reservation has already been completed
+     *
+     * @param reservation - Model with which a reservation is saved
+     */
     private void restoreRoomAvailability(ReservationModel reservation) {
         List<RoomModel> reservedRooms = reservation.getReservedRooms();
         for (RoomModel room : reservedRooms) {

@@ -34,8 +34,8 @@ import static com.playko.hotelservice.configuration.Constants.PDF_REPORT_CREATE_
 import static com.playko.hotelservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 
 @RestController
-@RequestMapping("/hotel/v1")
-public class HotelController {
+@RequestMapping("/admin/v1")
+public class AdminController {
     private final IHotelService hotelService;
 
     private final IReservationService reservationService;
@@ -44,7 +44,7 @@ public class HotelController {
 
     private final IPdfReportService pdfReportService;
 
-    public HotelController(IHotelService hotelService, IReservationService reservationService, ExcelReportService excelReportService, IPdfReportService pdfReportService) {
+    public AdminController(IHotelService hotelService, IReservationService reservationService, ExcelReportService excelReportService, IPdfReportService pdfReportService) {
         this.hotelService = hotelService;
         this.reservationService = reservationService;
         this.excelReportService = excelReportService;
@@ -64,18 +64,6 @@ public class HotelController {
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.HOTEL_CREATED_MESSAGE));
     }
 
-    @Operation(summary = "Get all the hotels")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Hotel list returned", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Hotel already exists", content = @Content)
-    })
-    @GetMapping("/list-hotels")
-    public ResponseEntity<List<HotelModel>> listHotel(
-            @Positive @RequestParam("page") int page,
-            @Positive @RequestParam("elementsXPage") int elementsXPage
-    ) {
-        return ResponseEntity.ok(hotelService.getHotelList(page, elementsXPage));
-    }
 
     @Operation(summary = "Get excel report")
     @ApiResponses(value = {

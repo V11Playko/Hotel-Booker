@@ -10,6 +10,12 @@ import java.util.List;
 @Component
 public class ReportUtils {
 
+    /**
+     * Method to obtain what type of rooms there are [standard, superior, suite]
+     *
+     * @param reservation - Model with which a reservation is saved
+     * @return roomTypes
+     */
     public List<String> getRoomTypesFromReservation(ReservationModel reservation) {
         List<String> roomTypes = new ArrayList<>();
 

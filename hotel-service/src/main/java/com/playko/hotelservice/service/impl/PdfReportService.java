@@ -33,6 +33,14 @@ public class PdfReportService implements IPdfReportService {
         this.reportUtils = reportUtils;
     }
 
+    /**
+     *  Generate pdf report
+     *
+     * @param fileName - name that the file will have
+     * @param reservations - list of reservations
+     * @param hotels - list of hotels
+     * @throws IOException
+     */
     @Override
     public void generatePdfReport(String fileName, List<ReservationModel> reservations, List<HotelModel> hotels) throws IOException {
         reservations.sort(Comparator.comparingLong(ReservationModel::getId));

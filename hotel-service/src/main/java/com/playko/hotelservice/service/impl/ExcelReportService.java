@@ -35,6 +35,14 @@ public class ExcelReportService implements IExcelReportService {
         this.reportUtils = reportUtils;
     }
 
+    /**
+     * Generate excel report
+     *
+     * @param fileName - name that the file will have
+     * @param reservations - list of reservations
+     * @param hotels - list of hotels
+     * @throws IOException
+     */
     @Override
     public void generateExcelReport(String fileName, List<ReservationModel> reservations, List<HotelModel> hotels) throws IOException {
         // Ordenar las reservas por ID
