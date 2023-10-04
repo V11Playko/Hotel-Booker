@@ -39,6 +39,8 @@ public class ReservationModel implements Serializable {
 
     private LocalDateTime dateReservation;
 
+    private String checkOutDate;
+
     private int lodgingTime;
 
     private String status;

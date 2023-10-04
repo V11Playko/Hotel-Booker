@@ -32,6 +32,14 @@ public class HotelService implements IHotelService {
         this.roomRepository = roomRepository;
     }
 
+    /**
+     * Save a hotel next to the specified rooms
+     *
+     * @param hotelModel - Model with which the hotel will be saved
+     * @throws  NumberRoomsPositiveException - The number of rooms must be positive
+     * @throws InvalidStarsCategoryException - The number of stars must be between 1 and 5
+     */
+
     @Override
     public void saveHotel(HotelModel hotelModel) {
         // Validar si el número de habitaciones es positivo
@@ -68,6 +76,15 @@ public class HotelService implements IHotelService {
         hotelRepository.save(hotelModel);
     }
 
+    /**
+     *  List the hotels with the indicated pagination
+     *
+     * @param page - Page number
+     * @param elementsXpage - Elements that will be per page
+     * @throws InvalidPageRequestException - They are doing pagination incorrectly
+     * @throws NoDataFoundException - No data found
+     * @return hotels
+     */
     @Override
     public List<HotelModel> getHotelList(int page, int elementsXpage) {
         // Define la ordenación por ID de manera ascendente
@@ -90,6 +107,38 @@ public class HotelService implements IHotelService {
         return hotels;
     }
 
+    /**
+     * Find all hotels
+     *
+     * @return
+     */
+    @Override
+    public List<HotelModel> findAllHotel() {
+        return hotelRepository.findAll();
+    }
+
+    /**
+     * Find all hotels using an id
+     *
+     * @param hotels - list of hotels
+     * @param hotelId - id of hotel
+     * @return hotels
+     */
+    @Override
+    public HotelModel findHotelById(List<HotelModel> hotels, Long hotelId) {
+        return hotels.stream()
+                .filter(hotel -> hotel.getId().equals(hotelId))
+                .findFirst()
+                .orElse(new HotelModel()); // Tratar la situación en la que no se encuentra el hotel
+    }
+
+    /**
+     * Method that returns the proportions of the rooms using the number of rooms and the number of stars
+     *
+     * @param starsCategory - Star category of the hotel
+     * @param numRooms - Number of hotel rooms
+     * @return proportions
+     */
     private double[] getRoomProportions(Integer starsCategory, Integer numRooms) {
         double[] proportions = {0.0, 0.0, 0.0}; // Inicializa todas las proporciones a 0
 

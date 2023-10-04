@@ -1,8 +1,10 @@
 package com.playko.hotelservice.controller;
 
 import com.playko.hotelservice.configuration.Constants;
+import com.playko.hotelservice.model.HotelModel;
 import com.playko.hotelservice.model.ReservationModel;
 import com.playko.hotelservice.model.RoomModel;
+import com.playko.hotelservice.service.IHotelService;
 import com.playko.hotelservice.service.IReservationService;
 import com.playko.hotelservice.service.IRoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,12 +31,27 @@ import java.util.Map;
 @RestController
 @RequestMapping("/hotel/v1/client")
 public class ClientController {
+    private final IHotelService hotelService;
     private final IRoomService roomService;
     private final IReservationService reservationService;
 
-    public ClientController(IRoomService roomService, IReservationService reservationService) {
+    public ClientController(IHotelService hotelService, IRoomService roomService, IReservationService reservationService) {
+        this.hotelService = hotelService;
         this.roomService = roomService;
         this.reservationService = reservationService;
+    }
+
+    @Operation(summary = "Get all the hotels")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Hotel list returned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Hotel already exists", content = @Content)
+    })
+    @GetMapping("/list-hotels")
+    public ResponseEntity<List<HotelModel>> listHotel(
+            @Positive @RequestParam("page") int page,
+            @Positive @RequestParam("elementsXPage") int elementsXPage
+    ) {
+        return ResponseEntity.ok(hotelService.getHotelList(page, elementsXPage));
     }
 
     @Operation(summary = "Get Rooms")

@@ -26,6 +26,17 @@ public class RoomService implements IRoomService {
         this.roomRepository = roomRepository;
     }
 
+    /**
+     * Get a list of rooms using hotel id and pagination
+     *
+     * @param hotelId - hotel id
+     * @param page - Page number
+     * @param elementsXpage - Elements that will be per page
+     * @throws HotelNotFoundException - Hotel not found
+     * @throws InvalidPageRequestException - They are doing pagination incorrectly
+     * @throws RoomNotFoundException - Room not found
+     * @return roomList
+     */
     @Override
     public List<RoomModel> getRooms(Long hotelId, int page, int elementsXpage) {
         // Crear un objeto Pageable para la paginación

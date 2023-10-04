@@ -15,6 +15,8 @@ public interface UserClient {
 
     @GetMapping("/admin/getOwner/{id}")
      Optional<User> getOwner(@PathVariable Long id);
+    @GetMapping("/admin/getClient/{id}")
+    Optional<User> getClientByAdmin(@PathVariable Long id);
 
     @GetMapping("/owner/getEmployee/{id}")
     Optional<User> getEmployee(@PathVariable Long id);
