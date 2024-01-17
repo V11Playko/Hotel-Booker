@@ -5,21 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +29,7 @@ public class ReservationModel implements Serializable {
     @Id
     private Long id;
 
-    @NotNull(message = "La fecha de reserva no puede ser nula.")
+    @NotNull
     private Long userId;
 
     private LocalDateTime dateReservation;
@@ -52,11 +47,6 @@ public class ReservationModel implements Serializable {
 
     @NotEmpty(message = "La lista de habitaciones reservadas no puede estar vacía.")
     @Size(min = 1, message = "Debe haber al menos una habitación reservada.")
-    @OneToMany
-    @JoinTable(
-            name = "reservation_room",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id")
-    )
+    @OneToMany(mappedBy = "reservation")
     private List<RoomModel> reservedRooms;
 }

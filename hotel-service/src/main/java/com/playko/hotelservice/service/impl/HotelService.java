@@ -5,7 +5,6 @@ import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
-import com.playko.hotelservice.service.exception.HotelNotSaveException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
 import com.playko.hotelservice.service.exception.InvalidStarsCategoryException;
 import com.playko.hotelservice.service.exception.NoDataFoundException;
