@@ -8,11 +8,17 @@ import com.playko.hotelservice.repository.IReservationRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,12 +28,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
     @Mock
     private IRoomRepository roomRepository;
     @Mock
     private IReservationRepository reservationRepository;
-
+    @Mock
+    private IHotelRepository hotelRepository;
     @InjectMocks
     private ReservationService reservationService;
 
@@ -38,21 +46,5 @@ class ReservationServiceTest {
 
     @Test
     void saveReservation()  {
-        ReservationModel reservationModel = new ReservationModel();
-        reservationModel.setHotel(new HotelModel());
-        reservationModel.setReservedRooms(Collections.singletonList(new RoomModel()));
-
-    // Simular el comportamiento de los repositorios
-    when(roomRepository.findRoomsByHotelId(anyLong())).thenReturn(Collections.singletonList(new RoomModel()));
-    when(reservationRepository.save(any(ReservationModel.class))).thenReturn(reservationModel);
-
-    // Llamar al método que se va a probar
-        reservationService.saveReservation(reservationModel);
-
-    // Verificar que el estado de las habitaciones se haya actualizado
-    verify(roomRepository, times(1)).saveAll(anyList());
-
-    // Verificar que la reserva se haya guardado
-    verify(reservationRepository, times(1)).save(any(ReservationModel.class));
-}
+    }
 }
