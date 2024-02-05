@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77706ed3-be97-4bb7-bbf7-3cff6f94cb34" name="Changes" comment="" />
+    <list default="true" id="77706ed3-be97-4bb7-bbf7-3cff6f94cb34" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/hotel-service/src/main/java/com/playko/hotelservice/configuration/security/jwt/JwtAuthorizationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/hotel-service/src/main/java/com/playko/hotelservice/configuration/security/jwt/JwtAuthorizationFilter.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
