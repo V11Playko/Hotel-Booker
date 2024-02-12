@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  user-service:
+    container_name: user-service
+    image: user-service-image:1.0.0
+    build: ./user-service
+    ports:
+      - "8091:8091"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://user-service-db:5432/user-service
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=komodor11
+    depends_on:
+      - user-service-db
+    volumes:
+      - user-service-data:/var/lib/postgresql/data
+
+  hotel-service:
+    container_name: hotel-service
+    image: hotel-service-image:1.0.0
+    build: ./hotel-service
+    ports:
+      - "8092:8092"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://hotel-service-db:5433/hotel-service
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=komodor11
+    depends_on:
+      - hotel-service-db
+    volumes:
+      - hotel-service-data:/var/lib/postgresql/data
+
+  user-service-db:
+    container_name: user-service-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: user-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: komodor11
+    volumes:
+      - user-service-data:/var/lib/postgresql/data
+
+  hotel-service-db:
+    container_name: hotel-service-db
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: hotel-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: komodor11
+    volumes:
+      - hotel-service-data:/var/lib/postgresql/data
+
+volumes:
+  user-service-data:
+  hotel-service-data:
