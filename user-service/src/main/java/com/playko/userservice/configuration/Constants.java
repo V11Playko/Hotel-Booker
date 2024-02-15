@@ -18,6 +18,9 @@ public class Constants {
     public static final Long OWNER_ROLE_ID = 2L;
     public static final Long EMPLOYEE_ROLE_ID = 3L;
     public static final Long CLIENT_ROLE_ID = 4L;
-
     public static final String USER_NOT_FOUND_EXCEPTION = "User not found.";
+    public static final String OWNER_NOT_FOUND_EXCEPTION = "The owner cannot be found with this ID.";
+    public static final String EMPLOYEE_NOT_FOUND_EXCEPTION = "The employee cannot be found with this ID.";
+    public static final String CLIENT_NOT_FOUND_EXCEPTION = "The client cannot be found with this ID.";
+
 }
