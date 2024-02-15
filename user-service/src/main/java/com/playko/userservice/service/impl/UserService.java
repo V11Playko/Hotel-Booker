@@ -6,6 +6,9 @@ import com.playko.userservice.model.UserModel;
 import com.playko.userservice.repository.IUserRepository;
 import com.playko.userservice.service.IAuthPasswordEncoderPort;
 import com.playko.userservice.service.IUserService;
+import com.playko.userservice.service.exceptions.ClientNotFound;
+import com.playko.userservice.service.exceptions.EmployeeNotFound;
+import com.playko.userservice.service.exceptions.OwnerNotFound;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,18 +46,18 @@ public class UserService implements IUserService {
     @Override
     public Optional<UserModel> getOwner(Long id) {
         return Optional.ofNullable(userRepository.findByIdAndRoleId(id, OWNER_ROLE_ID)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND_EXCEPTION)));
+                .orElseThrow(OwnerNotFound::new));
     }
 
     @Override
     public Optional<UserModel> getEmployee(Long id) {
         return Optional.ofNullable(userRepository.findByIdAndRoleId(id, EMPLOYEE_ROLE_ID)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND_EXCEPTION)));
+                .orElseThrow(EmployeeNotFound::new));
     }
 
     @Override
     public Optional<UserModel> getClient(Long id) {
         return Optional.ofNullable(userRepository.findByIdAndRoleId(id, CLIENT_ROLE_ID)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND_EXCEPTION)));
+                .orElseThrow(ClientNotFound::new));
     }
 }
