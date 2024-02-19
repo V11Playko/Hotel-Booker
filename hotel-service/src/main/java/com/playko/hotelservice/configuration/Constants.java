@@ -32,5 +32,7 @@ public class Constants {
     public static final String EXCEL_REPORT_CREATE_SUCCESSFULLY = "Excel report created successfully.";
     public static final String PDF_REPORT_CREATE_SUCCESSFULLY = "PDF report created successfully.";
     public static final String PDF_REPORT_GENERATION_EXCEPTION = "Error generating Pdf report.";
-
+    public static final String DUPLICATE_HOTEL_NAME_EXCEPTION = "This hotel name already exists.";
+    public static final String DUPLICATE_HOTEL_PHONE_EXCEPTION = "This hotel phone number already exists.";
+    public static final String DUPLICATE_HOTEL_ADDRESS_EXCEPTION = "This hotel address already exists.";
 }
