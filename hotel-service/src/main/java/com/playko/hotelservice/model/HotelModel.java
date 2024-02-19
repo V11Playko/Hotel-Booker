@@ -13,6 +13,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
@@ -44,14 +45,18 @@ public class HotelModel implements Serializable {
 
     @Min(value = 1, message = "La categoría de estrellas debe ser un número entre 1 y 5.")
     @Max(value = 5, message = "La categoría de estrellas debe ser un número entre 1 y 5.")
+    @NotNull(message = "El numero de estrellas del hotel no puede ser nulo")
     private Integer starsCategory;
 
     @Positive(message = "El número de habitaciones debe ser un valor positivo.")
+    @NotNull(message = "El número de habitaciones no puede ser nulo.")
     private Integer numberRooms;
 
+    @NotBlank(message = "Las facilidades del hotel no pueden estar vacias.")
     private String facilities;
 
     @DecimalMin(value = "0.0", message = "El precio promedio por noche debe ser un valor no negativo.")
+    @NotNull(message = "El precio por noche no puede ser nulo")
     private Double averagePricePerNight;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)

@@ -5,6 +5,9 @@ import com.playko.hotelservice.model.RoomModel;
 import com.playko.hotelservice.repository.IHotelRepository;
 import com.playko.hotelservice.repository.IRoomRepository;
 import com.playko.hotelservice.service.IHotelService;
+import com.playko.hotelservice.service.exception.DuplicateHotelAddressException;
+import com.playko.hotelservice.service.exception.DuplicateHotelNameException;
+import com.playko.hotelservice.service.exception.DuplicateHotelPhoneException;
 import com.playko.hotelservice.service.exception.InvalidPageRequestException;
 import com.playko.hotelservice.service.exception.InvalidStarsCategoryException;
 import com.playko.hotelservice.service.exception.NoDataFoundException;
@@ -41,24 +44,34 @@ public class HotelService implements IHotelService {
 
     @Override
     public void saveHotel(HotelModel hotelModel) {
-        // Validar si el número de habitaciones es positivo
+        if (hotelRepository.existsByName(hotelModel.getName())) {
+            throw new DuplicateHotelNameException();
+        }
+
+        if (hotelRepository.existsByPhoneNumber(hotelModel.getPhoneNumber())) {
+            throw new DuplicateHotelPhoneException();
+        }
+
+        if (hotelRepository.existsByAddress(hotelModel.getAddress())) {
+            throw new DuplicateHotelAddressException();
+        }
+
         if (hotelModel.getNumberRooms() <= 0) {
             throw new NumberRoomsPositiveException();
         }
 
-        // Validar si la categoría de estrellas está en el rango de 1 a 5
         int starsCategory = hotelModel.getStarsCategory();
         if (starsCategory < 1 || starsCategory > 5) {
             throw new InvalidStarsCategoryException();
         }
 
+        hotelRepository.save(hotelModel);
+
         // Define las proporciones de habitaciones según la categoría de estrellas
         double[] roomProportions = getRoomProportions(hotelModel.getStarsCategory(), hotelModel.getNumberRooms());
 
-        // Define las categorías de habitaciones y sus cantidades
         String[] roomCategories = {"Standard", "Superior", "Suite"};
 
-        // Crea y guarda las habitaciones en la base de datos
         for (String roomCategory : roomCategories) {
             int roomCount = (int) (roomProportions
                     [Arrays.asList(roomCategories).indexOf(roomCategory)] * hotelModel.getNumberRooms());
@@ -70,9 +83,6 @@ public class HotelService implements IHotelService {
                 roomRepository.save(room);
             }
         }
-
-        // Guarda el hotel en la base de datos después de crear las habitaciones
-        hotelRepository.save(hotelModel);
     }
 
     /**
@@ -86,17 +96,14 @@ public class HotelService implements IHotelService {
      */
     @Override
     public List<HotelModel> getHotelList(int page, int elementsXpage) {
-        // Define la ordenación por ID de manera ascendente
         Sort sort = Sort.by(Sort.Order.asc("id"));
 
-        // Crea una solicitud de página que incluya la ordenación
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, sort);
 
         if (page < 0 || elementsXpage <= 0) {
             throw new InvalidPageRequestException();
         }
 
-        // Obtén todos los hoteles ordenados por ID
         List<HotelModel> hotels = hotelRepository.findAll(sort);
 
         if (hotels.isEmpty()) {
