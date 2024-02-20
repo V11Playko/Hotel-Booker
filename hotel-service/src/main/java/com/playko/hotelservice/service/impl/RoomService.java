@@ -39,19 +39,15 @@ public class RoomService implements IRoomService {
      */
     @Override
     public List<RoomModel> getRooms(Long hotelId, int page, int elementsXpage) {
-        // Crear un objeto Pageable para la paginación
         Pageable pageable = PageRequest.of(page, elementsXpage);
 
-        // Buscar el hotel por su ID
         HotelModel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(HotelNotFoundException::new);
 
-        // Validar si el número de página y elementos por página son válidos
         if (page < 0 || elementsXpage <= 0) {
             throw new InvalidPageRequestException();
         }
 
-        // Obtener una página de habitaciones del hotel directamente
         List<RoomModel> roomsList = roomRepository.findRoomsByHotelId(hotelId, pageable).stream().toList();
 
         if (roomsList.isEmpty()) {

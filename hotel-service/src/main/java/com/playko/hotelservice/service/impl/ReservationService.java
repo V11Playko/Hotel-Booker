@@ -50,7 +50,6 @@ public class ReservationService implements IReservationService {
             throw new HotelNotFoundException();
         }
 
-        // Validar que lodgingTime no sea nulo ni negativo
         if (reservationModel.getLodgingTime() <= 0) {
             throw new IllegalArgumentException();
         }
@@ -68,10 +67,8 @@ public class ReservationService implements IReservationService {
             updateRoomAvailability(roomId, false, reservationModel);
         }
 
-        // Guarda las habitaciones actualizadas en la base de datos
         roomRepository.saveAll(roomListByHotelId);
 
-        // Guarda la reserva con las habitaciones actualizadas en la base de datos
         reservationRepository.save(reservationModel);
     }
 
@@ -127,10 +124,8 @@ public class ReservationService implements IReservationService {
             if (currentDateTime.isAfter(reservationEndDateTime)) {
                 // La reserva ha vencido, restaura la disponibilidad de las habitaciones
                 restoreRoomAvailability(reservation);
-                // Actualiza el estado de la reserva
                 reservation.setStatus("Completada");
                 reservation.setCheckOutDate(String.valueOf(currentDateTime));
-                // Actualiza la reserva en la base de datos
                 reservationRepository.save(reservation);
             }
         }
@@ -144,7 +139,6 @@ public class ReservationService implements IReservationService {
     private void restoreRoomAvailability(ReservationModel reservation) {
         List<RoomModel> reservedRooms = reservation.getReservedRooms();
         for (RoomModel room : reservedRooms) {
-            // Restaurar la disponibilidad de las habitaciones
             room.setAvailable(true);
             room.setReservation(null); // Elimina la referencia a la reserva
             roomRepository.save(room);
