@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: auth-service
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${CLIENTID}
+            client-secret: ${CLIENTSECRET}
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            authorization-grant-type: authorization_code
+            client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+      resourceserver:
+        opaque-token:
+          introspection-uri: https://www.googleapis.com/
+          clientId: ${CLIENTID}
+          clientSecret: ${CLIENTSECRET}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+appDescription: "Hotel Booker - Auth Service"
+appVersion: "1.0.0"

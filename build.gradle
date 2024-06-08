@@ -3,7 +3,7 @@ plugins {
 }
 
 allprojects {
-    group 'com.c17-36'
+    group 'com.playko'
     version '0.0.1-SNAPSHOT'
 }
 
