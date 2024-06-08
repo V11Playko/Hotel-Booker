@@ -3,7 +3,6 @@ package com.playko.userservice.controller;
 import com.playko.userservice.configuration.Constants;
 import com.playko.userservice.controller.dto.UserRequestDto;
 import com.playko.userservice.controller.mapper.IUserRequestMapper;
-import com.playko.userservice.model.UserModel;
 import com.playko.userservice.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
