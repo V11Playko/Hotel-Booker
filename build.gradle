@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+allprojects {
+    group 'com.c17-36'
+    version '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        // Dependencias comunes
+    }
+}
