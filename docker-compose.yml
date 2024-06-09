@@ -8,7 +8,7 @@ services:
     ports:
       - "8091:8091"
     environment:
-      - DATABASE_URL=jdbc:postgresql://user-service-db:5432/user-service
+      - DATABASE_URL=jdbc:postgresql://user-service-db:5432/usuarios-service
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=komodor11
     depends_on:
@@ -37,7 +37,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: user-service
+      POSTGRES_DB: usuarios-service
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: komodor11
     volumes:
