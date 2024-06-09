@@ -3,6 +3,7 @@ package com.playko.userservice.configuration.security.jwt;
 
 import com.playko.userservice.configuration.security.exception.JwtException;
 import com.playko.userservice.configuration.security.userDetails.CustomUserDetails;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -44,6 +45,14 @@ public class JwtUtils {
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getEmailFromJwtToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret.getBytes())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("email", String.class);
     }
 
     public boolean validateJwtToken(String authToken) {

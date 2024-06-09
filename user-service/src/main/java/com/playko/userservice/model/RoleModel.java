@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleModel implements Serializable {
