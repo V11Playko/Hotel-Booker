@@ -1,6 +1,24 @@
-#  Hotel Booker #
+# Hotel-Booker
 
-Este proyecto se enfoca en el desarrollo de una APIREST diseñada para gestionar hoteles y sus respectivas habitaciones, segun la cantidad de estrellas que el hotel tenga va a ofrecer diferentes cosas y tipos de habitaciones, se creo para aprender a crear informes en este caso en Excel y PDF.
+**Hotel-Booker** es un proyecto diseñado para gestionar la reserva de hoteles de manera eficiente y segura. Este proyecto ofrece una serie de funcionalidades que facilitan la administración de usuarios, hoteles, habitaciones y reservas. Además, implementa un sistema de autenticación robusto que incluye la opción de iniciar sesión mediante credenciales tradicionales o utilizando una cuenta de Google a través de OAuth2.
+
+## Características Principales
+
+- **Gestión de Usuarios**: Permite registrar, buscar y administrar usuarios. Se soportan diferentes roles como propietarios, empleados y clientes, cada uno con sus permisos y funcionalidades específicas.
+- **Autenticación**: Los usuarios pueden iniciar sesión utilizando su correo electrónico y contraseña o a través de su cuenta de Google mediante OAuth2. Este último método proporciona una capa adicional de seguridad y conveniencia al aprovechar la infraestructura de autenticación de Google.
+- **Gestión de Hoteles**: Funcionalidades para agregar y listar hoteles, así como para gestionar sus detalles y categorías de estrellas.
+- **Gestión de Habitaciones**: Permite definir las proporciones de habitaciones (Standard, Superior, Suite) basadas en la categoría de estrellas del hotel, y administrar su disponibilidad.
+- **Reservas**: Los usuarios pueden realizar reservas de habitaciones. El sistema gestiona el estado de las habitaciones reservadas y actualiza periódicamente las reservas expiradas.
+- **Generación de Reportes**: Creación de reportes en formatos Excel y PDF para facilitar la obtención de información detallada sobre las reservas, habitaciones y otros aspectos del sistema.
+
+## Tecnologías Utilizadas
+
+- **Spring Boot**: Marco de trabajo principal para la creación de microservicios.
+- **Spring Security con OAuth2**: Implementación de la autenticación y autorización, incluyendo el inicio de sesión con Google.
+- **JPA/Hibernate**: Para la gestión de la persistencia de datos.
+- **PostgreSQL**: Base de datos relacional utilizada para almacenar la información del sistema.
+- **Thymeleaf**: Motor de plantillas para la generación de vistas del lado del servidor para el login con Google.
+- **Gradle**: Para la gestión de dependencias y construcción del proyecto.
 
 ## Instalación y configuración ##
 
